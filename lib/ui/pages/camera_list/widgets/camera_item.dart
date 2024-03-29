@@ -4,6 +4,7 @@ import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:rtsp_preview/domain/entities/camera.dart';
 import 'package:rtsp_preview/ui/constants/app_color.dart';
 import 'package:rtsp_preview/ui/widgets/app_shimmer.dart';
+import 'package:rtsp_preview/ui/constants/constants.dart';
 
 class CameraItem extends StatefulWidget {
   final Camera camera;
@@ -20,9 +21,7 @@ class CameraItem extends StatefulWidget {
 }
 
 class _CameraItemState extends State<CameraItem> {
-  static const _videoRatio = 5 / 4;
   static const _revealAnimDuration = Duration(milliseconds: 1000);
-  static const _videoLoadLagDuration = Duration(milliseconds: 1000);
 
   double get _previewSize => 100.r;
   late final VlcPlayerController _vlcViewController;
@@ -37,7 +36,7 @@ class _CameraItemState extends State<CameraItem> {
       autoPlay: true,
     );
     _vlcViewController.addOnInitListener(() {
-      Future.delayed(_videoLoadLagDuration, () {
+      Future.delayed(videoLoadLagDuration, () {
         setState(() {
           isPreviewLoaded = true;
         });
@@ -69,11 +68,11 @@ class _CameraItemState extends State<CameraItem> {
                     ),
                     child: ClipRect(
                       child: OverflowBox(
-                        maxWidth: _previewSize * _videoRatio,
+                        maxWidth: _previewSize * videoRatio,
                         maxHeight: _previewSize,
                         child: VlcPlayer(
                           controller: _vlcViewController,
-                          aspectRatio: _videoRatio,
+                          aspectRatio: videoRatio,
                         ),
                       ),
                     ),

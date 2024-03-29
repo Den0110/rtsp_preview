@@ -19,7 +19,7 @@ class CameraListPage extends StatelessWidget {
           getIt<CameraListBloc>()..add(const CameraListEvent.started()),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Cameras'),
+          title: const Text('Камеры'),
         ),
         body: BlocBuilder<CameraListBloc, CameraListState>(
           builder: (context, state) {

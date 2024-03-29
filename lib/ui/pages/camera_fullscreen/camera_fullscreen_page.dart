@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:rtsp_preview/domain/entities/camera.dart';
+import 'package:rtsp_preview/ui/constants/constants.dart';
 
 @RoutePage()
 class CameraFullScreenPage extends StatefulWidget {
@@ -17,7 +20,6 @@ class CameraFullScreenPage extends StatefulWidget {
 }
 
 class _CameraFullScreenPageState extends State<CameraFullScreenPage> {
-  static const _videoRatio = 5 / 4;
   late final VlcPlayerController _vlcViewController;
 
   bool isPreviewLoaded = false;
@@ -29,6 +31,13 @@ class _CameraFullScreenPageState extends State<CameraFullScreenPage> {
       widget.camera.url,
       autoPlay: true,
     );
+    _vlcViewController.addOnInitListener(() {
+      Future.delayed(videoLoadLagDuration, () {
+        setState(() {
+          isPreviewLoaded = true;
+        });
+      });
+    });
   }
 
   @override
@@ -38,12 +47,10 @@ class _CameraFullScreenPageState extends State<CameraFullScreenPage> {
         Center(
           child: VlcPlayer(
             controller: _vlcViewController,
-            aspectRatio: _videoRatio,
-            placeholder: const Center(
-              child: CircularProgressIndicator(),
-            ),
+            aspectRatio: videoRatio,
           ),
         ),
+        if (!isPreviewLoaded) const Center(child: CircularProgressIndicator()),
         SafeArea(
           child: SizedBox(
             height: kToolbarHeight,
